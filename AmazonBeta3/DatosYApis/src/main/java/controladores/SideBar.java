@@ -15,11 +15,6 @@ public class SideBar {
 		System.out.println("Carga Pagina Principal");
 	}
     
-    public void showCart() throws IOException {
-    	contentPane.setCenter(new Tabs.Views().getCartView());
-		System.out.println("Carga Carrito");
-	}
-    
     public void showProduct() throws IOException {
     	contentPane.setCenter(new Tabs.Views().getProductView());
 		System.out.println("Carga Producto");

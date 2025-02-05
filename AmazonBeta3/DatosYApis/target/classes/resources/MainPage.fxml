@@ -26,14 +26,6 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-				<Button alignment="TOP_LEFT" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" onAction="#showCart" prefHeight="25.0" prefWidth="201.0" styleClass="no-fondo" text="Mis Compras">
-               <graphic>
-                  <ImageView fitHeight="18.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@ForwardArrow.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
 				<Label />
 				<Label text="-o-" />
 				<Label />
