@@ -1,0 +1,29 @@
+package UI;
+
+import java.io.IOException;
+
+import accesoDatos.CategoriaAd;
+import accesoDatos.ProductoAd;
+import accesoDatos.UsuarioAd;
+import data.Category;
+import data.Product;
+import javafx.application.Application;
+import serv.CategoryService;
+import serv.ProductService;
+import serv.UserService;
+
+public class Main {
+
+	public static void main(String[] args) throws IOException {
+		
+		
+		//Conectar Api e importarlos a la base de datos
+		//Primero Categorias, Productos, User
+		
+		
+		//Inicia GUI
+		Inicio.main(args);
+		
+		
+	}
+}

@@ -1,0 +1,77 @@
+/* Estilos solo para los botones con la clase 'no-fondo' */
+.no-fondo {
+    -fx-background-color: transparent; /* Sin fondo */
+    -fx-border-color: transparent; /* Sin borde */
+    -fx-text-fill: #000000; /* Color del texto, puedes cambiarlo */
+    -fx-font-size: 14px; /* Tamaño de fuente */
+}
+
+/* Efectos cuando el ratón pasa sobre los botones */
+.no-fondo:hover {
+    -fx-background-color: #f0f0f0; /* Color de fondo al pasar el mouse */
+    -fx-border-color: #ccc; /* Color de borde al pasar el mouse */
+}
+
+/* Efectos cuando el botón es presionado */
+.no-fondo:pressed {
+    -fx-background-color: #e0e0e0; /* Fondo cuando el botón está presionado */
+}
+
+
+/* Styling for the search button */
+.search-button {
+    -fx-background-color: #FF7F50; /* A cute coral background */
+    -fx-background-radius: 25px; /* Rounded corners */
+    -fx-text-fill: white; /* White text */
+    -fx-font-family: 'Arial'; /* Font style */
+    -fx-font-size: 16px; /* Font size */
+    -fx-padding: 10 20; /* Padding for better spacing */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0, 0, 2); /* Subtle shadow effect */
+    -fx-border-width: 2; /* Thin border */
+    -fx-border-color: #FF4500; /* Matching border color */
+    -fx-border-radius: 25px; /* Rounded corners */
+    -fx-cursor: hand; /* Change cursor to hand on hover */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+}
+
+/* Hover effect to make it even cuter */
+.search-button:hover {
+    -fx-background-color: #FF6347; /* Slightly darker coral on hover */
+    -fx-border-color: #FF4500; /* Same border color on hover */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0, 0, 3); /* Enhanced shadow effect */
+}
+
+/* Focus effect when clicked */
+.search-button:focused {
+    -fx-background-color: #FF4500; /* Change background to deeper coral */
+    -fx-border-color: #FF6347; /* Change border color */
+}
+/* Styling for the search bar container */
+.search-bar-container {
+    -fx-background-color: #f0f8ff; /* Light background color */
+    -fx-background-radius: 30px; /* Rounded corners for the container */
+    -fx-padding: 10px; /* Padding around the container */
+    -fx-alignment: center; /* Center the elements */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 5); /* Subtle shadow for the container */
+}
+
+/* Styling for the search input field */
+.search-input {
+    -fx-background-color: white; /* White background for input */
+    -fx-background-radius: 25px; /* Rounded corners for the input */
+    -fx-padding: 10px 15px; /* Padding inside the input */
+    -fx-font-size: 16px; /* Font size */
+    -fx-font-family: 'Arial'; /* Font style */
+    -fx-text-fill: #333333; /* Dark grey text */
+    -fx-border-width: 2; /* Thin border */
+    -fx-border-color: #FF7F50; /* Coral-colored border */
+    -fx-border-radius: 25px; /* Rounded corners */
+    -fx-cursor: text; /* Text cursor inside input field */
+    transition: all 0.3s ease; /* Smooth transition for focus effect */
+}
+
+/* Focus effect for the input field */
+.search-input:focused {
+    -fx-border-color: #FF6347; /* Darker coral border on focus */
+    -fx-background-color: #FFF5F0; /* Light background on focus */
+}

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="445.0" prefWidth="614.0"
+	stylesheets="@estilos.css" xmlns="http://javafx.com/javafx/23.0.1"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controladores.CategoryEditController">
+
+	<children>
+		<VBox alignment="TOP_CENTER" layoutY="0.0" prefHeight="457.0"
+			prefWidth="614.0" style="-fx-background-color: FFC267;"
+			AnchorPane.bottomAnchor="-12.0" AnchorPane.leftAnchor="0.0"
+			AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<Label prefHeight="31.0" prefWidth="28.0" />
+				<Label text="Editar Categoría">
+					<font>
+						<Font name="System Bold" size="24.0" />
+					</font>
+				</Label>
+				<Label fx:id="errorLabel" />
+				<HBox alignment="CENTER" prefWidth="200.0">
+					<children>
+						<Label prefHeight="17.0" prefWidth="21.0"
+							textAlignment="CENTER" />
+						<TextField fx:id="searchBar" prefHeight="25.0"
+							prefWidth="210.0"
+							promptText="Ingrese del Id del producto a editar" />
+						<Label prefHeight="17.0" prefWidth="21.0"
+							textAlignment="CENTER" />
+						<Button mnemonicParsing="false" onAction="#getCategory"
+							text="Buscar" />
+					</children>
+				</HBox>
+				<Label prefHeight="31.0" prefWidth="28.0" />
+				<VBox alignment="TOP_CENTER" prefWidth="100.0">
+					<children>
+						<HBox alignment="CENTER" prefWidth="200.0">
+							<children>
+								<Label text="Nombre:" textAlignment="CENTER">
+									<font>
+										<Font size="18.0" />
+									</font>
+								</Label>
+								<Label prefHeight="17.0" prefWidth="21.0"
+									textAlignment="CENTER" />
+								<TextField fx:id="nameField" prefHeight="31.0"
+									prefWidth="318.0" />
+							</children>
+						</HBox>
+						<Label />
+						<HBox alignment="CENTER" prefWidth="200.0">
+							<children>
+								<Label text="Imagenes: " textAlignment="CENTER">
+									<font>
+										<Font size="18.0" />
+									</font>
+								</Label>
+								<Label prefHeight="17.0" prefWidth="21.0"
+									textAlignment="CENTER" />
+								<TextArea fx:id="imagesArea" prefHeight="154.0"
+									prefWidth="301.0" />
+							</children>
+						</HBox>
+						<Label />
+					                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleAddCategory" text="Editar" disable="true"/>
+
+						<Label />
+					</children>
+				</VBox>
+			</children>
+		</VBox>
+	</children>
+</AnchorPane>
