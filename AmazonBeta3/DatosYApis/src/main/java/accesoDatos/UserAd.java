@@ -7,18 +7,21 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import data.Category;
+import data.User;
 
-public class CategoriaAd implements IAccesoDatos<Category> {
+public class UserAd implements IAccesoDatos<User> {
 
     @Override
-    public boolean crear(Category nuevo) {
-        String query = "INSERT INTO categoria (id, name, image) VALUES (?, ?, ?)";
+    public boolean crear(User nuevo) {
+        String query = "INSERT INTO usuario (id, name, email, password, role, avatar) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, nuevo.id());
             ps.setString(2, nuevo.name());
-            ps.setString(3, nuevo.image());
+            ps.setString(3, nuevo.email());
+            ps.setString(4, nuevo.password());
+            ps.setString(5, nuevo.role());
+            ps.setString(6, nuevo.avatar());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -27,37 +30,43 @@ public class CategoriaAd implements IAccesoDatos<Category> {
     }
 
     @Override
-    public List<Category> obtenerTodos() {
-        List<Category> categories = new ArrayList<>();
-        String query = "SELECT * FROM categoria";
+    public List<User> obtenerTodos() {
+        List<User> users = new ArrayList<>();
+        String query = "SELECT * FROM usuario";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-                categories.add(new Category(
+                users.add(new User(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("image")
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role"),
+                        rs.getString("avatar")
                 ));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return categories;
+        return users;
     }
 
     @Override
-    public Category obtenerPorId(int id) {
-        String query = "SELECT * FROM categoria WHERE id = ?";
+    public User obtenerPorId(int id) {
+        String query = "SELECT * FROM usuario WHERE id = ?";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return new Category(
+                return new User(
                         rs.getInt("id"),
                         rs.getString("name"),
-                        rs.getString("image")
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("role"),
+                        rs.getString("avatar")
                 );
             }
         } catch (SQLException e) {
@@ -67,13 +76,16 @@ public class CategoriaAd implements IAccesoDatos<Category> {
     }
 
     @Override
-    public boolean actualizar(Category nuevo) {
-        String query = "UPDATE categoria SET name = ?, image = ? WHERE id = ?";
+    public boolean actualizar(User nuevo) {
+        String query = "UPDATE usuario SET name = ?, email = ?, password = ?, role = ?, avatar = ? WHERE id = ?";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setString(1, nuevo.name());
-            ps.setString(2, nuevo.image());
-            ps.setInt(3, nuevo.id());
+            ps.setString(2, nuevo.email());
+            ps.setString(3, nuevo.password());
+            ps.setString(4, nuevo.role());
+            ps.setString(5, nuevo.avatar());
+            ps.setInt(6, nuevo.id());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -83,7 +95,7 @@ public class CategoriaAd implements IAccesoDatos<Category> {
 
     @Override
     public boolean eliminar(int id) {
-        String query = "DELETE FROM categoria WHERE id = ?";
+        String query = "DELETE FROM usuario WHERE id = ?";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, id);

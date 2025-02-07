@@ -9,7 +9,7 @@ import java.util.List;
 
 import data.Product;
 
-public class ProductoAd implements IAccesoDatos<Product> {
+public class ProductAd implements IAccesoDatos<Product> {
 
 	 @Override
 	    public boolean crear(Product producto) {

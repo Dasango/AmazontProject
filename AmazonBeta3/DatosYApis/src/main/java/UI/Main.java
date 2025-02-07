@@ -2,9 +2,9 @@ package UI;
 
 import java.io.IOException;
 
-import accesoDatos.CategoriaAd;
-import accesoDatos.ProductoAd;
-import accesoDatos.UsuarioAd;
+import accesoDatos.CategoryAd;
+import accesoDatos.ProductAd;
+import accesoDatos.UserAd;
 import data.Category;
 import data.Product;
 import javafx.application.Application;
