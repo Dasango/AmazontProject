@@ -111,38 +111,39 @@ public class ProductEditController {
 
 	@FXML
 	private void handleEditProduct() {
-		clearErrors();
+	    clearErrors();
 
-		try {
-			String name = nameField.getText().trim();
-			double price = Double.parseDouble(priceField.getText().trim());
+	    try {
+	        String name = nameField.getText().trim();
+	        double price = Double.parseDouble(priceField.getText().trim());
+	        Category category = categoryChoiceBox.getValue();
+	        String description = descriptionArea.getText().trim();
+	        String images = imagesArea.getText().trim();
 
-			Category category = categoryChoiceBox.getValue();
-			String description = descriptionArea.getText().trim();
-			String images = imagesArea.getText().trim();
+	        if (name.isEmpty() || category == null || description.isEmpty() || images.isEmpty()) {
+	            errorLabel.setText("Todos los campos son obligatorios.");
+	            return;
+	        }
 
-			if (name.isEmpty() || category == null || description.isEmpty() || images.isEmpty()) {
-				errorLabel.setText("Todos los campos son obligatorios.");
-				return;
-			}
+	        Product product = new Product(idProductEditing, name, price, description, category, images.split("\n"));
+	        boolean updated = new ProductAd().actualizar(product);
+	        
+	        if (updated) {
+	        	 errorLabel.setText("Producto actualizado correctamente.");
+	        	 clearFields();
+	            System.out.println("Producto actualizado: " + product);
+	            
+	        } else {
+	            errorLabel.setText("Error al actualizar el producto.");
+	        }
 
-			// ADRIAN Aqui estan todos los nuevos campos QUE VA ATOCAR ACTUALIZAR;
-			// AL PRODUCTO CON ID: idProductIditing
-			// Pa que veas que si crea un producto:
-			var product = new Product(idProductEditing, name, price, description, category, images.split("\n"));
-
-			// AQUI HAS TU CODIGO
-
-			System.out.println("Producto editado: " + product);
-
-			clearFields();
-
-		} catch (NumberFormatException e) {
-			errorLabel.setText("Por favor, ingrese un precio válido.");
-		} catch (Exception e) {
-			errorLabel.setText("Error al agregar el producto.");
-		}
+	    } catch (NumberFormatException e) {
+	        errorLabel.setText("Por favor, ingrese un precio válido.");
+	    } catch (Exception e) {
+	        errorLabel.setText("Error al actualizar el producto.");
+	    }
 	}
+
 
 	private void clearFields() {
 		nameField.clear();

@@ -1,6 +1,5 @@
 package controladores;
 
-
 import accesoDatos.CategoryAd;
 import data.Category;
 import javafx.fxml.FXML;
@@ -12,96 +11,99 @@ import javafx.scene.input.KeyCode;
 
 public class CategoryEditController {
 
-	@FXML
-	private TextField searchBar;
-	
-	@FXML
-	private Button editButton;
-	
-	@FXML
-	private TextField nameField;
+    @FXML
+    private TextField searchBar;
 
-	@FXML
-	private TextArea imagesArea;
+    @FXML
+    private Button editButton;
 
-	@FXML
-	private Label errorLabel;
+    @FXML
+    private TextField nameField;
 
+    @FXML
+    private TextArea imagesArea;
 
+    @FXML
+    private Label errorLabel;
 
-	@FXML
-	public void initialize() {
+    private int currentCategoryId = -1; 
+
+    @FXML
+    public void initialize() {
         searchBar.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
-            	getCategory();
+                getCategory();
             }
         });
-	}
-	
-	@FXML
-	public void getCategory() {
-	    try {
-	        var search = searchBar.getText().trim();
-	        searchBar.setText(""); 
+    }
 
-	        int categoryId = Integer.parseInt(search); 
-	        	        
-	        var category = new CategoryAd().obtenerPorId(categoryId); 
+    @FXML
+    public void getCategory() {
+        try {
+            String search = searchBar.getText().trim();
+            searchBar.setText("");
 
-	        if (category != null) {
-	            errorLabel.setText("Editando categoría con ID: " + categoryId);
+            int categoryId = Integer.parseInt(search);
+            
+            Category category = new CategoryAd().obtenerPorId(categoryId);
 
-	            nameField.setText(category.name());
-	            
-	            imagesArea.setText(category.image());
-	            editButton.setDisable(false); 
+            if (category != null) {
+                errorLabel.setText("Editando categoría con ID: " + categoryId);
+                nameField.setText(category.name());
+                imagesArea.setText(category.image());
+                editButton.setDisable(false);
+                currentCategoryId = categoryId; 
+            } else {
+                errorLabel.setText("Categoría no encontrada");
+            }
+        } catch (NumberFormatException e) {
+            errorLabel.setText("Por favor, ingrese un número válido :(");
+        } catch (Exception e) {
+            errorLabel.setText("No se encontró la categoría :(");
+        }
+    }
 
-	        } else {
-	            errorLabel.setText("Categoría no encontrada");
-	        }
-	    } catch (NumberFormatException e) {
-	        errorLabel.setText("Por favor, ingrese un número válido :(");
-	    } catch (Exception e) {
-	        errorLabel.setText("No se encontró la categoría :(");
-	    }
-	}
+    @FXML
+    private void handleEditCategory() {
+        clearErrors();
 
-	
-	@FXML
-	private void handleAddCategory() {
-		clearErrors();
+        if (currentCategoryId == -1) {
+            errorLabel.setText("Debe buscar una categoría antes de editar.");
+            return;
+        }
 
-		try {
-			String name = nameField.getText().trim();
+        try {
+            String name = nameField.getText().trim();
+            String image = imagesArea.getText().trim();
 
-			String image = imagesArea.getText().trim();
+            if (name.isEmpty() || image.isEmpty()) {
+                errorLabel.setText("Todos los campos son obligatorios.");
+                return;
+            }
 
-			if (name.isEmpty() || image.isEmpty()) {
-				errorLabel.setText("Todos los campos son obligatorios.");
-				return;
-			}
+            Category category = new Category(currentCategoryId, name, image);
+            boolean updated = new CategoryAd().actualizar(category);
 
-			var category = new Category(1, name, image);
+            if (updated) {
+                errorLabel.setText("Categoría actualizada correctamente.");
+                clearFields();
+                currentCategoryId = -1; 
+                System.out.println("Categoria editada exitosamente :)  " + category);
+            } else {
+                errorLabel.setText("No se pudo actualizar la categoría.");
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Error al actualizar la categoría.");
+        }
+    }
 
+    private void clearFields() {
+        nameField.clear();
+        imagesArea.clear();
+    }
 
-			System.out.println("Producto agregado: " + category);
-
-			clearFields();
-
-		} catch (NumberFormatException e) {
-			errorLabel.setText("Por favor, ingrese un precio válido.");
-		} catch (Exception e) {
-			errorLabel.setText("Error al agregar el producto.");
-		}
-	}
-
-	private void clearFields() {
-		nameField.clear();
-		imagesArea.clear();
-	}
-
-	private void clearErrors() {
-		errorLabel.setText("");
-	}
-
+    private void clearErrors() {
+        errorLabel.setText("");
+    }
 }
+
