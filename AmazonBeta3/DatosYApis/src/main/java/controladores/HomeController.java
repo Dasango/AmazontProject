@@ -52,11 +52,12 @@ public class HomeController {
                 imageView.setImage(new Image(imageUrl));            
             } else {
             	error.setText("Sin imágenes.");
-                title.setText(product.title());
-                price.setText("Precio: "+product.price());
-                category.setText("Categoría: "+product.category().name());
-                description.setText("Descripción: "+ product.description());
+                
             }
+            title.setText(product.title());
+            price.setText("Precio: "+product.price());
+            category.setText("Categoría: "+product.category().name());
+            description.setText("Descripción: "+ product.description());
         } catch (NumberFormatException e) {
         	error.setText("Por favor, ingrese un número válido :(");
         } catch (Exception e) {

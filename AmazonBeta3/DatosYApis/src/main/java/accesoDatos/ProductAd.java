@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Statement;
+
 
 import data.Product;
 
@@ -13,43 +15,54 @@ public class ProductAd implements IAccesoDatos<Product> {
 
 	@Override
 	public boolean crear(Product producto) {
-		String query = "INSERT INTO producto (title, price, description, categoria) VALUES ( ?, ?, ?, ?)";
+	    String query = "INSERT INTO producto (title, price, description, categoria) VALUES (?, ?, ?, ?)";
 
-		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+	    try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
-			ps.setString(1, producto.title());
-			ps.setDouble(2, producto.price());
-			ps.setString(3, producto.description());
-			ps.setInt(4, producto.category().id());
+	        ps.setString(1, producto.title());
+	        ps.setDouble(2, producto.price());
+	        ps.setString(3, producto.description());
+	        ps.setInt(4, producto.category().id());
 
-			if (ps.executeUpdate() > 0) {
+	        if (ps.executeUpdate() > 0) {
+	            // Obtener el ID generado
+	            ResultSet rs = ps.getGeneratedKeys();
+	            int generatedId = -1;
+	            if (rs.next()) {
+	                generatedId = rs.getInt(1);
+	            } else {
+	                System.out.println("Error: No se pudo obtener el ID del producto insertado.");
+	                return false;
+	            }
 
-				String queryImg = "INSERT INTO imgproducto ( id, path) VALUES (?, ?)";
+	            // Insertar imágenes
+	            String queryImg = "INSERT INTO imgproducto (id, path) VALUES (?, ?)";
 
-				for (String img : producto.images()) {
-					try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
-						psImg.setInt(1, producto.id());
-						psImg.setString(2, img);
+	            for (String img : producto.images()) {
+	                try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
+	                    psImg.setInt(1, generatedId);  // ✅ Usamos el ID generado
+	                    psImg.setString(2, img);
 
-						if (psImg.executeUpdate() <= 0) {
-							System.out.println("Para el producto " + producto.id() + " — " + producto.title());
-							System.out.println("No se pudo insertar la imagen: " + img);
-						}
-					} catch (SQLException e) {
-						System.out.println("Para el producto " + producto.id() + " — " + producto.title());
-						System.out.println("No se pudo insertar la imagen: " + img);
-						e.printStackTrace();
-					}
-				}
-				return true;
-			}
-		} catch (SQLException e) {
-			System.out.println("Error al crear el producto " + producto.id() + " — " + producto.title());
-			e.printStackTrace();
-		}
+	                    if (psImg.executeUpdate() <= 0) {
+	                        System.out.println("Para el producto " + generatedId + " — " + producto.title());
+	                        System.out.println("No se pudo insertar la imagen: " + img);
+	                    }
+	                } catch (SQLException e) {
+	                    System.out.println("Para el producto " + generatedId + " — " + producto.title());
+	                    System.out.println("No se pudo insertar la imagen: " + img);
+	                    e.printStackTrace();
+	                }
+	            }
+	            return true;
+	        }
+	    } catch (SQLException e) {
+	        System.out.println("Error al crear el producto " + producto.title());
+	        e.printStackTrace();
+	    }
 
-		return false;
+	    return false;
 	}
+
 
 	public boolean crearApi(Product producto) {
 		String query = "INSERT INTO producto (id, title, price, description, categoria) VALUES (?, ?, ?, ?, ?)";
