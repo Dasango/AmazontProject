@@ -31,15 +31,15 @@ public class SideBar {
     
     public void showEProduct() throws IOException {
     	contentPane.setCenter(new Tabs.Views().getProductEView());
-		System.out.println("Carga ProductoE");
+		System.out.println("Carga ProductoEdit");
 	}
     
     public void showECategory() throws IOException {
     	contentPane.setCenter(new Tabs.Views().getCategoryEView());
-		System.out.println("Carga CategoriaE");
+		System.out.println("Carga CategoriaEdit");
 	}
     public void showEUser() throws IOException {
     	contentPane.setCenter(new Tabs.Views().getUserEView());
-		System.out.println("Carga UserE");
+		System.out.println("Carga UserEdit");
 	}
 }

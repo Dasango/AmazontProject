@@ -1,25 +1,18 @@
 package controladores;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+
 
 import accesoDatos.CategoryAd;
 import accesoDatos.ProductAd;
 import data.Category;
 import data.Product;
-import data.User;
 import javafx.fxml.FXML;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
-import serv.CategoryService;
+
 
 public class ProductAddController {
 

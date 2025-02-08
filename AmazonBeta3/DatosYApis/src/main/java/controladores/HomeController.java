@@ -13,9 +13,7 @@ public class HomeController {
 	
     
     @FXML
-    private TextField searchBar;
-    
-    
+    private TextField searchBar;  
     @FXML
     private ImageView imageView;
     @FXML
@@ -51,24 +49,22 @@ public class HomeController {
                      
             if (product.images().length > 0) {
                 String imageUrl = product.images()[0];                
-                imageView.setImage(new Image(imageUrl));
+                imageView.setImage(new Image(imageUrl));            
+            } else {
+            	error.setText("Sin imágenes.");
                 title.setText(product.title());
                 price.setText("Precio: "+product.price());
                 category.setText("Categoría: "+product.category().name());
                 description.setText("Descripción: "+ product.description());
-                
-            } else {
-                System.out.println("No se que paso XD. Producto no encontrado o sin imágenes.");
-                
             }
         } catch (NumberFormatException e) {
         	error.setText("Por favor, ingrese un número válido :(");
         } catch (Exception e) {
         	error.setText("No se encontro el producto :(");
         }
+        
     }
-
-    
+  
     private void emptyAll() {
     	error.setText("");
         imageView.setImage(null); 

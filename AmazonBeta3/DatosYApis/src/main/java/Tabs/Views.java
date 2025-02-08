@@ -18,11 +18,6 @@ public class Views {
 		return this.view;
 	}
 
-	public Parent getCartView() throws IOException {
-		this.view = FXMLLoader.load(getClass().getResource("/resources/Cart.fxml"));
-		return this.view;
-	}
-
 	public Parent getProductView() throws IOException {
 		this.view = FXMLLoader.load(getClass().getResource("/resources/ProductAdd.fxml"));
 		return this.view;
