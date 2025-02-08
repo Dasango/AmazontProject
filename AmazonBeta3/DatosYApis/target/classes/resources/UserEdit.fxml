@@ -97,7 +97,7 @@
                      </children>
                   </HBox>
                   <Label />
-                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleAddUser" text="Editar" disable="true"/>
+                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditUser" text="Editar" disable="true"/>
                   <Label />
                </children></VBox>
          </children>

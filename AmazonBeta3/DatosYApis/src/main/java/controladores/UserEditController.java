@@ -41,16 +41,25 @@ public class UserEditController {
 	            }
 	        });
 	}
-
+// no funciona esta clase xdxdxd
 	@FXML
 	public void getUser() {
 	    try {
-	        var search = searchBar.getText().trim();
-	        searchBar.setText(""); 
+	        String search = searchBar.getText().trim();
+	        System.out.println("Valor del campo searchBar: " + search);  
 
-	        int userId = Integer.parseInt(search); 
-	        
-	        var user = new UserAd().obtenerPorId(userId) ;
+	        // Verificación de entrada
+	        if (search.isEmpty() || !search.matches("\\d+")) {
+	            errorLabel.setText("Por favor, ingrese un número válido :(");
+	            editButton.setDisable(true);
+	            return;
+	        }
+
+	        searchBar.setText("");  // Limpiar el campo después de obtener el valor
+
+	        int userId = Integer.parseInt(search);
+
+	        var user = new UserAd().obtenerPorId(userId);
 
 	        if (user != null) {
 	            errorLabel.setText("Editando usuario con ID: " + userId);
@@ -61,50 +70,56 @@ public class UserEditController {
 	            roleField.setText(user.role());
 	            avatarField.setText(user.avatar());
 
-	            editButton.setDisable(false); // Habilita el botón de edición
-
+	            editButton.setDisable(false); 
 	        } else {
 	            errorLabel.setText("Usuario no encontrado");
+	            editButton.setDisable(true);  
 	        }
-	    } catch (NumberFormatException e) {
-	        errorLabel.setText("Por favor, ingrese un número válido :(");
 	    } catch (Exception e) {
 	        errorLabel.setText("No se encontró el usuario :(");
+	        editButton.setDisable(true);  
 	    }
 	}
-	
+
 	@FXML
-	private void handleAddUser() {
-		clearErrors();
+	private void handleEditUser() {
+	    clearErrors();
 
-		try {
-			String name = nameField.getText().trim();
-			String email = emailField.getText().trim();
-			String clave = claveField.getText().trim();
-			String role = roleField.getText().trim();
-			String avatar = avatarField.getText().trim();
+	    try {
+	        String name = nameField.getText().trim();
+	        String email = emailField.getText().trim();
+	        String clave = claveField.getText().trim();
+	        String role = roleField.getText().trim();
+	        String avatar = avatarField.getText().trim();
 
-			// Validar que no haya campos vacíos
-			if (name.isEmpty() || email.isEmpty() || clave.isEmpty() || role.isEmpty() || avatar.isEmpty()) {
-				errorLabel.setText("Todos los campos son obligatorios.");
-				return;
-			}
+	        if (name.isEmpty() || email.isEmpty() || clave.isEmpty() || role.isEmpty() || avatar.isEmpty()) {
+	            errorLabel.setText("Todos los campos son obligatorios.");
+	            return;
+	        }
 
-			// Aquí se crearían los objetos de usuario y se los agregarían a una base de
-			// datos
-			var user = new User(1, name, email, clave, role, avatar);
+	        int userId = Integer.parseInt(searchBar.getText().trim());
 
-			// Suponiendo que el servicio agrega el usuario a una base de datos
-			// serv.UserService.addUser(user);
+	        var user = new User(userId, name, email, clave, role, avatar);
 
-			System.out.println("Usuario agregado: " + user);
+	        UserAd userAd = new UserAd();
+	        boolean updated = userAd.actualizar(user);
 
-			clearFields();
+	        if (updated) {
+	            System.out.println("Usuario actualizado: " + user);
+	            errorLabel.setText("Usuario actualizado correctamente.");
+	            clearFields();
+	        } else {
+	            errorLabel.setText("No se pudo actualizar el usuario.");
+	        }
 
-		} catch (Exception e) {
-			errorLabel.setText("Error al agregar el usuario.");
-		}
+	    } catch (NumberFormatException e) {
+	        errorLabel.setText("ID del usuario inválido.");
+	    } catch (Exception e) {
+	        errorLabel.setText("Error al editar el usuario: " + e.getMessage());
+	        e.printStackTrace();  // Imprime el detalle del error en la consola para depuración
+	    }
 	}
+
 
 	private void clearFields() {
 		nameField.clear();

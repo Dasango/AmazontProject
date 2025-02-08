@@ -71,7 +71,7 @@
 							</children>
 						</HBox>
 						<Label />
-					                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleAddCategory" text="Editar" disable="true"/>
+					                  <Button fx:id="editButton" mnemonicParsing="false" onAction="#handleEditCategory" text="Editar" disable="true"/>
 
 						<Label />
 					</children>
