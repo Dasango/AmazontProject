@@ -11,139 +11,161 @@ import data.Product;
 
 public class ProductAd implements IAccesoDatos<Product> {
 
-	 @Override
-	    public boolean crear(Product producto) {
-	        String query = "INSERT INTO producto (id, title, price, description, categoria) VALUES (?, ?, ?, ?, ?)";
+	@Override
+	public boolean crear(Product producto) {
+		String query = "INSERT INTO producto (title, price, description, categoria) VALUES ( ?, ?, ?, ?)";
 
-	        try (Connection con = getConnection(); 
-	             PreparedStatement ps = con.prepareStatement(query)) {
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
 
-	            ps.setInt(1, producto.id());
-	            ps.setString(2, producto.title());
-	            ps.setDouble(3, producto.price());
-	            ps.setString(4, producto.description());
-	            ps.setInt(5, producto.category().id());
+			ps.setString(1, producto.title());
+			ps.setDouble(2, producto.price());
+			ps.setString(3, producto.description());
+			ps.setInt(4, producto.category().id());
 
-	            if (ps.executeUpdate() > 0) {
+			if (ps.executeUpdate() > 0) {
 
-	                // Insertar imágenes
-	                String queryImg = "INSERT INTO imgproducto ( id, path) VALUES (?, ?)";
-	                int cont = 1;
+				String queryImg = "INSERT INTO imgproducto ( id, path) VALUES (?, ?)";
 
-	                for (String img : producto.images()) {
-	                    try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
-	                        psImg.setInt(1, producto.id());
-	                        psImg.setString(2, img);
+				for (String img : producto.images()) {
+					try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
+						psImg.setInt(1, producto.id());
+						psImg.setString(2, img);
 
-	                        if (psImg.executeUpdate() <= 0) {
-	                            System.out.println("Para el producto " + producto.id() + " — " + producto.title());
-	                            System.out.println("No se pudo insertar la imagen: " + img);
-	                        }
-	                    } catch (SQLException e) {
-	                        System.out.println("Para el producto " + producto.id() + " — " + producto.title());
-	                        System.out.println("No se pudo insertar la imagen: " + img);
-	                        e.printStackTrace();
-	                    }
-	                }
-	                return true;
-	            }
-	        } catch (SQLException e) {
-	            System.out.println("Error al crear el producto " + producto.id() + " — " + producto.title());
-	            e.printStackTrace();
-	        }
+						if (psImg.executeUpdate() <= 0) {
+							System.out.println("Para el producto " + producto.id() + " — " + producto.title());
+							System.out.println("No se pudo insertar la imagen: " + img);
+						}
+					} catch (SQLException e) {
+						System.out.println("Para el producto " + producto.id() + " — " + producto.title());
+						System.out.println("No se pudo insertar la imagen: " + img);
+						e.printStackTrace();
+					}
+				}
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al crear el producto " + producto.id() + " — " + producto.title());
+			e.printStackTrace();
+		}
 
-	        return false;
-	    }
+		return false;
+	}
 
-    private String[] obtenerImg(int productId) {
-        List<String> images = new ArrayList<>();
-        String query = "SELECT url FROM imagenes WHERE producto_id = "+ productId;
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, productId);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                images.add(rs.getString("url"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return images.toArray(new String[0]);
-    }
+	public boolean crearApi(Product producto) {
+		String query = "INSERT INTO producto (id, title, price, description, categoria) VALUES (?, ?, ?, ?, ?)";
 
-    @Override
-    public List<Product> obtenerTodos() {
-        List<Product> products = new ArrayList<>();
-        String query = "SELECT * FROM producto";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) {
-                products.add(new Product(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getDouble("price"),
-                        rs.getString("description"),
-                        null, // Cargar categoría después si es necesario
-                        obtenerImg(rs.getInt("id"))
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
-    }
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
 
-    @Override
-    public Product obtenerPorId(int id) {
-        String query = "SELECT * FROM producto WHERE id = ?";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Product(
-                        rs.getInt("id"),
-                        rs.getString("title"),
-                        rs.getDouble("price"),
-                        rs.getString("description"),
-                        null,
-                        obtenerImg(id)
-                );
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+			ps.setInt(1, producto.id());
+			ps.setString(2, producto.title());
+			ps.setDouble(3, producto.price());
+			ps.setString(4, producto.description());
+			ps.setInt(5, producto.category().id());
 
-    @Override
-    public boolean actualizar(Product nuevo) {
-        String query = "UPDATE producto SET title = ?, price = ?, description = ?, categoria = ? WHERE id = ?";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setString(1, nuevo.title());
-            ps.setDouble(2, nuevo.price());
-            ps.setString(3, nuevo.description());
-            ps.setInt(4, nuevo.category() != null ? nuevo.category().id() : null);
-            ps.setInt(5, nuevo.id());
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+			if (ps.executeUpdate() > 0) {
 
-    @Override
-    public boolean eliminar(int id) {
-        String query = "DELETE FROM producto WHERE id = ?";
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(query)) {
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+				// Insertar imágenes
+				String queryImg = "INSERT INTO imgproducto ( id, path) VALUES (?, ?)";
+				int cont = 1;
+
+				for (String img : producto.images()) {
+					try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
+						psImg.setInt(1, producto.id());
+						psImg.setString(2, img);
+
+						if (psImg.executeUpdate() <= 0) {
+							System.out.println("Para el producto " + producto.id() + " — " + producto.title());
+							System.out.println("No se pudo insertar la imagen: " + img);
+						}
+					} catch (SQLException e) {
+						System.out.println("Para el producto " + producto.id() + " — " + producto.title());
+						System.out.println("No se pudo insertar la imagen: " + img);
+						e.printStackTrace();
+					}
+				}
+				return true;
+			}
+		} catch (SQLException e) {
+			System.out.println("Error al crear el producto " + producto.id() + " — " + producto.title());
+			e.printStackTrace();
+		}
+
+		return false;
+	}
+
+	private String[] obtenerImg(int productId) {
+		List<String> images = new ArrayList<>();
+		String query = "SELECT path FROM imgproducto WHERE id = " + productId;
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+			ps.setInt(1, productId);
+			ResultSet rs = ps.executeQuery();
+			while (rs.next()) {
+				images.add(rs.getString("path"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return images.toArray(new String[0]);
+	}
+
+	@Override
+	public List<Product> obtenerTodos() {
+		List<Product> products = new ArrayList<>();
+		String query = "SELECT * FROM producto";
+		try (Connection con = getConnection();
+				PreparedStatement ps = con.prepareStatement(query);
+				ResultSet rs = ps.executeQuery()) {
+			while (rs.next()) {
+				products.add(new Product(rs.getInt("id"), rs.getString("title"), rs.getDouble("price"),
+						rs.getString("description"), null, obtenerImg(rs.getInt("id"))));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return products;
+	}
+
+	@Override
+	public Product obtenerPorId(int id) {
+		String query = "SELECT * FROM producto WHERE id = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+			ps.setInt(1, id);
+			ResultSet rs = ps.executeQuery();
+			if (rs.next()) {
+				return new Product(rs.getInt("id"), rs.getString("title"), rs.getDouble("price"),
+						rs.getString("description"), null, obtenerImg(id));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public boolean actualizar(Product nuevo) {
+		String query = "UPDATE producto SET title = ?, price = ?, description = ?, categoria = ? WHERE id = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+			ps.setString(1, nuevo.title());
+			ps.setDouble(2, nuevo.price());
+			ps.setString(3, nuevo.description());
+			ps.setInt(4, nuevo.category() != null ? nuevo.category().id() : null);
+			ps.setInt(5, nuevo.id());
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean eliminar(int id) {
+		String query = "DELETE FROM producto WHERE id = ?";
+		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+			ps.setInt(1, id);
+			return ps.executeUpdate() > 0;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 }

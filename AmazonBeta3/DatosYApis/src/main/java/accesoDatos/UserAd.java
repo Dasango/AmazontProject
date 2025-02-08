@@ -10,9 +10,25 @@ import java.util.List;
 import data.User;
 
 public class UserAd implements IAccesoDatos<User> {
-
+	
     @Override
     public boolean crear(User nuevo) {
+        String query = "INSERT INTO usuario ( name, email, password, role, avatar) VALUES ( ?, ?, ?, ?, ?)";
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setString(1, nuevo.name());
+            ps.setString(2, nuevo.email());
+            ps.setString(3, nuevo.password());
+            ps.setString(4, nuevo.role());
+            ps.setString(5, nuevo.avatar());
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean crearApi(User nuevo) {
         String query = "INSERT INTO usuario (id, name, email, password, role, avatar) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {

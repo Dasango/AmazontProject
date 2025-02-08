@@ -11,6 +11,7 @@ import javafx.application.Application;
 import serv.CategoryService;
 import serv.ProductService;
 import serv.UserService;
+import sincronizacion.CargarBase;
 
 public class Main {
 
@@ -18,7 +19,10 @@ public class Main {
 		
 		
 		//Conectar Api e importarlos a la base de datos
-		//Primero Categorias, Productos, User
+		
+		CargarBase.sincroniarTodos();
+		
+		
 		
 		
 		//Inicia GUI

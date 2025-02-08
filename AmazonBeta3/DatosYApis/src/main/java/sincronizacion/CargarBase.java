@@ -13,22 +13,24 @@ import java.util.List;
 
 public class CargarBase {
 	
+
+
 		 
 	private void sincronizarCategorias() {
-			CategoryService categoryServ = new CategoryService();
+		
 			CategoryAd categoryAd = new CategoryAd();
 	 
 			List<Category> categorias = null;
 	 
 			try {
-				categorias = categoryServ.getAllCategories();
+				categorias = CategoryService.getAllCategories();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	 
 			for (var a : categorias) {
 	 
-				if (categoryAd.crear(a)) {
+				if (categoryAd.crearApi(a)) {
 					System.out.println("Categoría insertada :3 : " + a);
 				} else {
 					System.out.println("Error al insertar la categoría con ID " + a.id() + " D:");
@@ -36,20 +38,20 @@ public class CargarBase {
 			}
 		}
 		private void sincronizarProductos() {
-			ProductService productServ = new ProductService();
+			
 			ProductAd productAd = new ProductAd();
 	 
 			List<Product> productos = null;
 	 
 			try {
-				productos = productServ.getAllProducts();
+				productos = ProductService.getAllProducts();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	 
 			for (var a : productos) {
 	 
-				if (productAd.crear(a)) {
+				if (productAd.crearApi(a)) {
 					System.out.println("Producto insertado :3 : " + a);
 				} else {
 					System.out.println("Error al insertar el producto con ID " + a.id() + " D:");
@@ -57,20 +59,20 @@ public class CargarBase {
 			}
 		}
 		private void sincronizarUsuarios() {
-			UserService userServ = new UserService();
+			
 			UserAd userAd = new UserAd();
 	 
 			List<User> usuarios = null;
 	 
 			try {
-				usuarios = userServ.getAllUsers();
+				usuarios = UserService.getAllUsers();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 	 
 			for (var a : usuarios) {
 	 
-				if (userAd.crear(a)) {
+				if (userAd.crearApi(a)) {
 					System.out.println("Usuarie insertade :3 : " + a);
 				} else {
 					System.out.println("Error al insertar el usuarie con ID " + a.id() + " D:");
@@ -80,8 +82,8 @@ public class CargarBase {
 		public static void sincroniarTodos() {
 			CargarBase m = new CargarBase();
 			m.sincronizarCategorias();
-			//m.sincronizarProductos();
-			//m.sincronizarUsuarios();
+			m.sincronizarProductos();
+			m.sincronizarUsuarios();
 		}
 
 
