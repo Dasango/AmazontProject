@@ -2,6 +2,8 @@ package controladores;
 
 
 
+import java.sql.SQLException;
+
 import accesoDatos.CategoryAd;
 import accesoDatos.ProductAd;
 import data.Category;
@@ -84,6 +86,8 @@ public class ProductAddController {
 
 		} catch (NumberFormatException e) {
 			errorLabel.setText("Por favor, ingrese un precio válido.");
+		} catch (SQLException e) {
+			errorLabel.setText("Error al agregar el producto.");			
 		} catch (Exception e) {
 			errorLabel.setText("Error al agregar el producto.");
 		}

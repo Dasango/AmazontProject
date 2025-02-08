@@ -15,7 +15,7 @@ public interface IAccesoDatos<T> {
 	
 	List<T> obtenerTodos () ; 
 	T obtenerPorId(int id); 
-	boolean crear (T nuevo); 
+	boolean crear (T nuevo) throws SQLException; 
 	boolean actualizar (T nuevo);
 	boolean eliminar(int id); 
 

@@ -13,7 +13,7 @@ public class CategoryAd implements IAccesoDatos<Category> {
 	
 	
     @Override
-    public boolean crear(Category nuevo) {
+    public boolean crear(Category nuevo) throws SQLException{
         String query = "INSERT INTO categoria (name, image) VALUES (?, ?)";
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -21,9 +21,9 @@ public class CategoryAd implements IAccesoDatos<Category> {
             ps.setString(2, nuevo.image());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
-            e.printStackTrace();
+        	 throw new SQLException();
         }
-        return false;
+
     }
 
 

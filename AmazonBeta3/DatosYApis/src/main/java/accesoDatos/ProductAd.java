@@ -14,10 +14,11 @@ import data.Product;
 public class ProductAd implements IAccesoDatos<Product> {
 
 	@Override
-	public boolean crear(Product producto) {
+	public boolean crear(Product producto) throws SQLException {
 	    String query = "INSERT INTO producto (title, price, description, categoria) VALUES (?, ?, ?, ?)";
 
-	    try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+	    try (Connection con = getConnection();
+	         PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
 	        ps.setString(1, producto.title());
 	        ps.setDouble(2, producto.price());
@@ -31,35 +32,24 @@ public class ProductAd implements IAccesoDatos<Product> {
 	            if (rs.next()) {
 	                generatedId = rs.getInt(1);
 	            } else {
-	                System.out.println("Error: No se pudo obtener el ID del producto insertado.");
-	                return false;
+	                throw new SQLException("No se pudo obtener el ID del producto insertado.");
 	            }
 
 	            // Insertar imágenes
 	            String queryImg = "INSERT INTO imgproducto (id, path) VALUES (?, ?)";
-
 	            for (String img : producto.images()) {
 	                try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
-	                    psImg.setInt(1, generatedId);  // ✅ Usamos el ID generado
+	                    psImg.setInt(1, generatedId);
 	                    psImg.setString(2, img);
 
 	                    if (psImg.executeUpdate() <= 0) {
-	                        System.out.println("Para el producto " + generatedId + " — " + producto.title());
-	                        System.out.println("No se pudo insertar la imagen: " + img);
+	                        throw new SQLException("No se pudo insertar la imagen: " + img);
 	                    }
-	                } catch (SQLException e) {
-	                    System.out.println("Para el producto " + generatedId + " — " + producto.title());
-	                    System.out.println("No se pudo insertar la imagen: " + img);
-	                    e.printStackTrace();
 	                }
 	            }
 	            return true;
 	        }
-	    } catch (SQLException e) {
-	        System.out.println("Error al crear el producto " + producto.title());
-	        e.printStackTrace();
 	    }
-
 	    return false;
 	}
 
