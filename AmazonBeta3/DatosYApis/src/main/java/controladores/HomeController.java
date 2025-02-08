@@ -1,5 +1,6 @@
 package controladores;
 
+import accesoDatos.ProductAd;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -27,8 +28,7 @@ public class HomeController {
     private Label description;
     @FXML
     private Label error;
-    @FXML
-    private Button add;
+
     
     @FXML
     public void initialize() {
@@ -47,19 +47,18 @@ public class HomeController {
 
             int productId = Integer.parseInt(search);
 
-            var product = serv.ProductService.getProductById(productId);
-
-            if (product != null && product.images().length > 0) {
+            var product = new ProductAd().obtenerPorId(productId);
+                     
+            if (product.images().length > 0) {
                 String imageUrl = product.images()[0];                
                 imageView.setImage(new Image(imageUrl));
                 title.setText(product.title());
                 price.setText("Precio: "+product.price());
                 category.setText("Categoría: "+product.category().name());
                 description.setText("Descripción: "+ product.description());
-                add.setOpacity(1);
-
+                
             } else {
-                System.out.println("Producto no encontrado o sin imágenes.");
+                System.out.println("No se que paso XD. Producto no encontrado o sin imágenes.");
                 
             }
         } catch (NumberFormatException e) {
@@ -68,14 +67,7 @@ public class HomeController {
         	error.setText("No se encontro el producto :(");
         }
     }
-    
-    @FXML
-    public void addToCart() {
-        
-    	//logica
-    	
-    	error.setText("Producto añadido: " + title.getText());
-    }
+
     
     private void emptyAll() {
     	error.setText("");
@@ -84,7 +76,5 @@ public class HomeController {
         price.setText("");
         category.setText("");
         description.setText("");
-        add.setOpacity(0);
-
     }
 }

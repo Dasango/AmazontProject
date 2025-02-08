@@ -61,8 +61,6 @@
 					</children>
 				</HBox>
             <Label />
-            <Button fx:id="add" mnemonicParsing="false" onAction="#addToCart" opacity="0.0" pickOnBounds="false" text="Añadir" />
-            <Label />
 			</children>
 		</VBox>
 	</children>

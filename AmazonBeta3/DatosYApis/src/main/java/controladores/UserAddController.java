@@ -1,5 +1,7 @@
 package controladores;
 
+import accesoDatos.ProductAd;
+import accesoDatos.UserAd;
 import data.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -47,15 +49,12 @@ public class UserAddController {
                 return;
             }
 
-            // Aquí se crearían los objetos de usuario y se los agregarían a una base de datos
             var user = new User(1, name, email, clave, role, avatar);
 
-            // Suponiendo que el servicio agrega el usuario a una base de datos
-            // serv.UserService.addUser(user);
-
-            System.out.println("Usuario agregado: " + user);
+			new UserAd().crear(user);
 
             clearFields();
+            
 
         } catch (Exception e) {
             errorLabel.setText("Error al agregar el usuario.");

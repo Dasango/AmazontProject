@@ -1,5 +1,7 @@
 package controladores;
 
+import accesoDatos.ProductAd;
+import accesoDatos.UserAd;
 import data.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -44,11 +46,11 @@ public class UserEditController {
 	public void getUser() {
 	    try {
 	        var search = searchBar.getText().trim();
-	        searchBar.setText(""); // Limpia la barra de búsqueda
+	        searchBar.setText(""); 
 
-	        int userId = Integer.parseInt(search); // Convierte la entrada a un número
-
-	        var user = serv.UserService.getUserById(userId); // Llama al servicio para obtener el usuario
+	        int userId = Integer.parseInt(search); 
+	        
+	        var user = new UserAd().obtenerPorId(userId) ;
 
 	        if (user != null) {
 	            errorLabel.setText("Editando usuario con ID: " + userId);

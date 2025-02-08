@@ -20,7 +20,7 @@ public class Main {
 		
 		//Conectar Api e importarlos a la base de datos
 		
-		CargarBase.sincroniarTodos();
+		//CargarBase.sincroniarTodos();
 		
 		
 		

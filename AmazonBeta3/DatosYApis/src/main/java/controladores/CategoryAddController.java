@@ -1,5 +1,7 @@
 package controladores;
 
+import accesoDatos.CategoryAd;
+import accesoDatos.UserAd;
 import data.Category;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -38,10 +40,9 @@ public class CategoryAddController {
 
 			var category = new Category(1, name, image);
 
-			// Supón que el servicio agrega el producto a una base de datos o una lista.
-			// serv.ProductService.addProduct(product);
+			new CategoryAd().crear(category);
 
-			System.out.println("Producto agregado: " + category);
+			System.out.println("Categoria agregado: " + category);
 
 			clearFields();
 

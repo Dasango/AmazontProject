@@ -1,9 +1,7 @@
 package controladores;
 
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
+import accesoDatos.CategoryAd;
 import data.Category;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -11,7 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
-import serv.CategoryService;
 
 public class CategoryEditController {
 
@@ -48,7 +45,8 @@ public class CategoryEditController {
 	        searchBar.setText(""); 
 
 	        int categoryId = Integer.parseInt(search); 
-	        var category = serv.CategoryService.getCategoryById(categoryId); 
+	        	        
+	        var category = new CategoryAd().obtenerPorId(categoryId); 
 
 	        if (category != null) {
 	            errorLabel.setText("Editando categoría con ID: " + categoryId);
@@ -85,8 +83,6 @@ public class CategoryEditController {
 
 			var category = new Category(1, name, image);
 
-			// Supón que el servicio agrega el producto a una base de datos o una lista.
-			// serv.ProductService.addProduct(product);
 
 			System.out.println("Producto agregado: " + category);
 

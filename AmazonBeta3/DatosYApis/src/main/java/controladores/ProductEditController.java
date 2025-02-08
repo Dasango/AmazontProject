@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import accesoDatos.CategoryAd;
+import accesoDatos.ProductAd;
 import data.Category;
 import data.Product;
 import javafx.fxml.FXML;
@@ -48,10 +50,8 @@ public class ProductEditController {
 
 	@FXML
 	public void initialize() {
-		try {
-			List<Category> allCategories = serv.CategoryService.getAllCategories();
 
-			categoryChoiceBox.getItems().setAll(allCategories);
+			categoryChoiceBox.getItems().setAll(new CategoryAd().obtenerTodos());
 
 			categoryChoiceBox.setConverter(new StringConverter<>() {
 				@Override
@@ -65,10 +65,6 @@ public class ProductEditController {
 							.findFirst().orElse(null);
 				}
 			});
-
-		} catch (IOException e) {
-			System.err.println("Problema con las categorías: " + e.getMessage());
-		}
 
 		searchBar.setOnKeyPressed(event -> {
 			if (event.getCode() == KeyCode.ENTER) {
@@ -86,7 +82,7 @@ public class ProductEditController {
 
 			int productId = Integer.parseInt(search);
 
-			var product = serv.ProductService.getProductById(productId);
+            var product = new ProductAd().obtenerPorId(productId);
 
 			if (product != null) {
 

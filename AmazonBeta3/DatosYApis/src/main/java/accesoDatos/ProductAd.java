@@ -94,19 +94,20 @@ public class ProductAd implements IAccesoDatos<Product> {
 	}
 
 	private String[] obtenerImg(int productId) {
-		List<String> images = new ArrayList<>();
-		String query = "SELECT path FROM imgproducto WHERE id = " + productId;
-		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
-			ps.setInt(1, productId);
-			ResultSet rs = ps.executeQuery();
-			while (rs.next()) {
-				images.add(rs.getString("path"));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return images.toArray(new String[0]);
+	    List<String> images = new ArrayList<>();
+	    String query = "SELECT path FROM imgproducto WHERE id = ?"; 
+	    try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {
+	        ps.setInt(1, productId);
+	        ResultSet rs = ps.executeQuery();
+	        while (rs.next()) {
+	            images.add(rs.getString("path"));
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return images.toArray(new String[0]);
 	}
+
 
 	@Override
 	public List<Product> obtenerTodos() {
@@ -133,7 +134,7 @@ public class ProductAd implements IAccesoDatos<Product> {
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
 				return new Product(rs.getInt("id"), rs.getString("title"), rs.getDouble("price"),
-						rs.getString("description"), null, obtenerImg(id));
+						rs.getString("description"), new CategoryAd().obtenerPorId(rs.getInt("categoria")), obtenerImg(id));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

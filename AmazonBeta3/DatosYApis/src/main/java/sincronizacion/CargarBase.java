@@ -31,7 +31,7 @@ public class CargarBase {
 			for (var a : categorias) {
 	 
 				if (categoryAd.crearApi(a)) {
-					System.out.println("Categoría insertada :3 : " + a);
+					System.out.println("Categoría insertada: " + a);
 				} else {
 					System.out.println("Error al insertar la categoría con ID " + a.id() + " D:");
 				}
@@ -52,7 +52,7 @@ public class CargarBase {
 			for (var a : productos) {
 	 
 				if (productAd.crearApi(a)) {
-					System.out.println("Producto insertado :3 : " + a);
+					System.out.println("Producto insertado: " + a);
 				} else {
 					System.out.println("Error al insertar el producto con ID " + a.id() + " D:");
 				}
@@ -73,7 +73,7 @@ public class CargarBase {
 			for (var a : usuarios) {
 	 
 				if (userAd.crearApi(a)) {
-					System.out.println("Usuarie insertade :3 : " + a);
+					System.out.println("Usuario insertado: " + a);
 				} else {
 					System.out.println("Error al insertar el usuarie con ID " + a.id() + " D:");
 				}

@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import accesoDatos.CategoryAd;
+import accesoDatos.ProductAd;
 import data.Category;
 import data.Product;
 import data.User;
@@ -42,36 +44,25 @@ public class ProductAddController {
 	@FXML
 	private Label errorLabel;
 
-
-
 	@FXML
 	public void initialize() {
-	    try {
-	        List<Category> allCategories = serv.CategoryService.getAllCategories(); 
 
+		categoryChoiceBox.getItems().setAll(new CategoryAd().obtenerTodos());
 
-	        categoryChoiceBox.getItems().setAll(allCategories);
+		categoryChoiceBox.setConverter(new StringConverter<>() {
+			@Override
+			public String toString(Category category) {
+				return category != null ? category.name() : "";
+			}
 
-	        categoryChoiceBox.setConverter(new StringConverter<>() {
-	            @Override
-	            public String toString(Category category) {
-	                return category != null ? category.name() : "";
-	            }
+			@Override
+			public Category fromString(String string) {
+				return categoryChoiceBox.getItems().stream().filter(category -> category.name().equals(string))
+						.findFirst().orElse(null);
+			}
+		});
 
-	            @Override
-	            public Category fromString(String string) {
-	                return categoryChoiceBox.getItems().stream()
-	                        .filter(category -> category.name().equals(string))
-	                        .findFirst()
-	                        .orElse(null);
-	            }
-	        });
-
-	    } catch (IOException e) {
-	        System.err.println("Problema con las categorías: " + e.getMessage());
-	    }
 	}
-
 
 	@FXML
 	private void handleAddProduct() {
@@ -90,11 +81,10 @@ public class ProductAddController {
 				return;
 			}
 
-			// ADRIAN YA LEE EL LO DE LOS CAMPOS SOLO MAQUINALE COMO ENVIARLES A LA BASE
-			// AQUI PRUEBO QUE SI CREA UN PRODUCTO
 			var product = new Product(1, name, price, description, category, images.split("\n"));
-
-			// AQUI HAS TU CODIGO
+			
+			new ProductAd().crear(product);
+			
 			System.out.println("Producto agregado: " + product);
 
 			clearFields();
