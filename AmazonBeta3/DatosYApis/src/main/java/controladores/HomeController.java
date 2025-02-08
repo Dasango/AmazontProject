@@ -48,20 +48,25 @@ public class HomeController {
             var product = new ProductAd().obtenerPorId(productId);
                      
             if (product.images().length > 0) {
-                String imageUrl = product.images()[0];                
-                imageView.setImage(new Image(imageUrl));            
+                String imageUrl = product.images()[0];
+                try {
+                    imageView.setImage(new Image(imageUrl, true)); 
+                } catch (Exception e) {
+                    imageView.setImage(new Image("/resources/No_Image_Available.jpg")); 
+                }
             } else {
-            	error.setText("Sin imágenes.");
-                
+                imageView.setImage(new Image("/resources/No_Image_Available.jpg"));
             }
+
             title.setText(product.title());
-            price.setText("Precio: "+product.price());
-            category.setText("Categoría: "+product.category().name());
-            description.setText("Descripción: "+ product.description());
+            price.setText("Precio: " + product.price());
+            category.setText("Categoría: " + product.category().name());
+            description.setText("Descripción: " + product.description());
+
         } catch (NumberFormatException e) {
         	error.setText("Por favor, ingrese un número válido :(");
         } catch (Exception e) {
-        	error.setText("No se encontro el producto :(");
+        	error.setText("No se encontró el producto :(");
         }
         
     }
