@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import serv.UserService;
 
 public class UserAddController {
 
@@ -53,6 +54,7 @@ public class UserAddController {
 
             UserAd userAd = new UserAd();
             if (userAd.crear(user)) {
+            	UserService.createUser(user);
                 errorLabel.setText("Usuario creado correctamente.");
                 System.out.println("Usuario creado: " + user);
                 clearFields(); 

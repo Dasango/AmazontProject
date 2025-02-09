@@ -1,12 +1,12 @@
 package controladores;
 
 import accesoDatos.CategoryAd;
-import accesoDatos.UserAd;
 import data.Category;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import serv.CategoryService;
 
 public class CategoryAddController {
 	
@@ -39,9 +39,9 @@ public class CategoryAddController {
 			}
 
 			var category = new Category(1, name, image);
-
 			new CategoryAd().crear(category);
-
+			CategoryService.createCategory(category);
+			
 			System.out.println("Categoria agregado: " + category);
 
 			clearFields();

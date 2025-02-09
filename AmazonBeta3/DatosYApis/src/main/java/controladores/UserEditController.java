@@ -1,135 +1,186 @@
 package controladores;
 
-import accesoDatos.ProductAd;
+import java.util.Optional;
+
 import accesoDatos.UserAd;
 import data.User;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 
 public class UserEditController {
-	@FXML
-	private TextField searchBar;
-	@FXML
-	private Button editButton;
-	@FXML
-	private TextField nameField;
+    @FXML
+    private TextField searchBar;
+    @FXML
+    private Button editButton;
+    @FXML
+    private Button deleteButton;
+    @FXML
+    private TextField nameField;
+    @FXML
+    private TextField emailField;
+    @FXML
+    private TextField claveField;
+    @FXML
+    private ComboBox<String> roleComboBox;
+    @FXML
+    private TextField avatarField;
+    @FXML
+    private Label errorLabel;
 
-	@FXML
-	private TextField emailField;
+    private Integer currentUserId = null; // Variable para guardar el ID del usuario actual
 
-	@FXML
-	private TextField claveField;
+    @FXML
+    public void initialize() {
+        searchBar.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                getUser();
+            }
+        });
+        roleComboBox.setItems(FXCollections.observableArrayList("admin", "customer", "seller"));
+    }
 
-	@FXML
-	private TextField roleField;
+    @FXML
+    public void getUser() {
+        try {
+            String search = searchBar.getText().trim();
+            System.out.println("Valor del campo searchBar: " + search);
 
-	@FXML
-	private TextField avatarField;
+            if (search.isEmpty() || !search.matches("\\d+")) {
+                errorLabel.setText("Por favor, ingrese un número válido :(");
+                editButton.setDisable(true);
+                deleteButton.setDisable(true); // Deshabilitar el botón de eliminar
+                return;
+            }
 
-	@FXML
-	private Label errorLabel;
-	
+            int userId = Integer.parseInt(search);
+            var user = new UserAd().obtenerPorId(userId);
 
-	@FXML
-	public void initialize() {
-		   searchBar.setOnKeyPressed(event -> {
-	            if (event.getCode() == KeyCode.ENTER) {
-	            	getUser();
-	            }
-	        });
-	}
-// no funciona esta clase xdxdxd
-	@FXML
-	public void getUser() {
-	    try {
-	        String search = searchBar.getText().trim();
-	        System.out.println("Valor del campo searchBar: " + search);  
+            if (user != null) {
+                currentUserId = userId; // Guardamos el ID en la variable de instancia
+                errorLabel.setText("Editando usuario con ID: " + userId);
 
-	        // Verificación de entrada
-	        if (search.isEmpty() || !search.matches("\\d+")) {
-	            errorLabel.setText("Por favor, ingrese un número válido :(");
-	            editButton.setDisable(true);
-	            return;
-	        }
+                nameField.setText(user.name());
+                emailField.setText(user.email());
+                claveField.setText(user.password());
+                roleComboBox.setValue(user.role());
+                avatarField.setText(user.avatar());
 
-	        searchBar.setText("");  // Limpiar el campo después de obtener el valor
+                editButton.setDisable(false);
+                deleteButton.setDisable(false); // Habilitar el botón de eliminar cuando se encuentra el usuario
+            } else {
+                errorLabel.setText("Usuario no encontrado");
+                editButton.setDisable(true);
+                deleteButton.setDisable(true); // Deshabilitar el botón de eliminar si no se encuentra el usuario
+            }
+        } catch (Exception e) {
+            errorLabel.setText("No se encontró el usuario :(");
+            editButton.setDisable(true);
+            deleteButton.setDisable(true); // Deshabilitar el botón de eliminar si ocurre un error
+        }
+    }
 
-	        int userId = Integer.parseInt(search);
+    @FXML
+    private void handleDeleteUser() {
+        try {
+            if (currentUserId == null) {
+                errorLabel.setText("Debe buscar un usuario antes de eliminar.");
+                return;
+            }
 
-	        var user = new UserAd().obtenerPorId(userId);
+            // Verificar si el usuario existe con el currentUserId
+            var user = new UserAd().obtenerPorId(currentUserId);
+            if (user == null) {
+                errorLabel.setText("Usuario no encontrado.");
+                return;
+            }
 
-	        if (user != null) {
-	            errorLabel.setText("Editando usuario con ID: " + userId);
+            // Confirmación de eliminación
+            boolean confirm = showConfirmationDialog();
+            if (!confirm) {
+                return; // Si el usuario no confirma, no se elimina
+            }
 
-	            nameField.setText(user.name());
-	            emailField.setText(user.email());
-	            claveField.setText(user.password());
-	            roleField.setText(user.role());
-	            avatarField.setText(user.avatar());
+            // Intentamos eliminar el usuario
+            boolean deleted = new UserAd().eliminar(currentUserId);
 
-	            editButton.setDisable(false); 
-	        } else {
-	            errorLabel.setText("Usuario no encontrado");
-	            editButton.setDisable(true);  
-	        }
-	    } catch (Exception e) {
-	        errorLabel.setText("No se encontró el usuario :(");
-	        editButton.setDisable(true);  
-	    }
-	}
+            if (deleted) {
+                errorLabel.setText("Usuario eliminado correctamente.");
+                clearFields();
+            } else {
+                errorLabel.setText("No se pudo eliminar el usuario.");
+            }
 
-	@FXML
-	private void handleEditUser() {
-	    clearErrors();
+        } catch (Exception e) {
+            errorLabel.setText("Error al eliminar el usuario.");
+            e.printStackTrace();
+        }
+    }
 
-	    try {
-	        String name = nameField.getText().trim();
-	        String email = emailField.getText().trim();
-	        String clave = claveField.getText().trim();
-	        String role = roleField.getText().trim();
-	        String avatar = avatarField.getText().trim();
+    private boolean showConfirmationDialog() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación de eliminación");
+        alert.setHeaderText("¿Estás seguro de que deseas eliminar este usuario?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
 
-	        if (name.isEmpty() || email.isEmpty() || clave.isEmpty() || role.isEmpty() || avatar.isEmpty()) {
-	            errorLabel.setText("Todos los campos son obligatorios.");
-	            return;
-	        }
+    @FXML
+    private void handleEditUser() {
+        clearErrors();
 
-	        int userId = Integer.parseInt(searchBar.getText().trim());
+        try {
+            if (currentUserId == null) {
+                errorLabel.setText("Debe buscar un usuario antes de editar.");
+                return;
+            }
 
-	        var user = new User(userId, name, email, clave, role, avatar);
+            String name = nameField.getText().trim();
+            String email = emailField.getText().trim();
+            String clave = claveField.getText().trim();
+            String role = roleComboBox.getValue();
+            String avatar = avatarField.getText().trim();
 
-	        UserAd userAd = new UserAd();
-	        boolean updated = userAd.actualizar(user);
+            if (name.isEmpty() || email.isEmpty() || clave.isEmpty() || role == null || avatar.isEmpty()) {
+                errorLabel.setText("Todos los campos son obligatorios.");
+                return;
+            }
 
-	        if (updated) {
-	            System.out.println("Usuario actualizado: " + user);
-	            errorLabel.setText("Usuario actualizado correctamente.");
-	            clearFields();
-	        } else {
-	            errorLabel.setText("No se pudo actualizar el usuario.");
-	        }
+            var user = new User(currentUserId, name, email, clave, role, avatar);
+            UserAd userAd = new UserAd();
+            boolean updated = userAd.actualizar(user);
 
-	    } catch (NumberFormatException e) {
-	        errorLabel.setText("ID del usuario inválido.");
-	    } catch (Exception e) {
-	        errorLabel.setText("Error al editar el usuario: " + e.getMessage());
-	        e.printStackTrace();  // Imprime el detalle del error en la consola para depuración
-	    }
-	}
+            if (updated) {
+                System.out.println("Usuario actualizado: " + user);
+                errorLabel.setText("Usuario actualizado correctamente.");
+                clearFields();
+                currentUserId = null; // Resetear el ID después de editar
+            } else {
+                errorLabel.setText("No se pudo actualizar el usuario.");
+            }
 
+        } catch (Exception e) {
+            errorLabel.setText("Error al editar el usuario: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
-	private void clearFields() {
-		nameField.clear();
-		emailField.clear();
-		claveField.clear();
-		roleField.clear();
-		avatarField.clear();
-	}
+    private void clearFields() {
+        nameField.clear();
+        emailField.clear();
+        claveField.clear();
+        roleComboBox.setValue(null);
+        avatarField.clear();
+    }
 
-	private void clearErrors() {
-		errorLabel.setText("");
-	}
+    private void clearErrors() {
+        errorLabel.setText("");
+    }
 }
+

@@ -1,9 +1,14 @@
 package controladores;
 
+import java.util.Optional;
+
 import accesoDatos.CategoryAd;
 import data.Category;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -16,6 +21,9 @@ public class CategoryEditController {
 
     @FXML
     private Button editButton;
+    
+    @FXML
+    private Button deleteButton;
 
     @FXML
     private TextField nameField;
@@ -52,9 +60,11 @@ public class CategoryEditController {
                 nameField.setText(category.name());
                 imagesArea.setText(category.image());
                 editButton.setDisable(false);
+                deleteButton.setDisable(false); // Habilitamos el botón de eliminar
                 currentCategoryId = categoryId; 
             } else {
                 errorLabel.setText("Categoría no encontrada");
+                deleteButton.setDisable(true); // Deshabilitamos el botón si no se encuentra la categoría
             }
         } catch (NumberFormatException e) {
             errorLabel.setText("Por favor, ingrese un número válido :(");
@@ -62,6 +72,46 @@ public class CategoryEditController {
             errorLabel.setText("No se encontró la categoría :(");
         }
     }
+
+    @FXML
+    public void handleDeleteCategory() {
+        try {
+            if (currentCategoryId == -1) {
+                errorLabel.setText("Debe buscar una categoría antes de eliminar.");
+                return;
+            }
+
+            // Confirmación de eliminación
+            boolean confirm = showConfirmationDialog();  // Llamamos a un método de confirmación (ver abajo)
+            if (!confirm) {
+                return;
+            }
+
+            // Intentamos eliminar la categoría
+            boolean deleted = new CategoryAd().eliminar(currentCategoryId);
+
+            if (deleted) {
+                errorLabel.setText("Categoría eliminada correctamente.");
+                clearFields();
+                currentCategoryId = -1;
+                deleteButton.setDisable(true); // Deshabilitamos el botón después de la eliminación
+            } else {
+                errorLabel.setText("No se pudo eliminar la categoría.");
+            }
+        } catch (Exception e) {
+            errorLabel.setText("Error al eliminar la categoría.");
+            e.printStackTrace();
+        }
+    }
+
+    private boolean showConfirmationDialog() {
+        Alert alert = new Alert(AlertType.CONFIRMATION);
+        alert.setTitle("Confirmación de eliminación");
+        alert.setHeaderText("¿Estás seguro de que deseas eliminar esta categoría?");
+        Optional<ButtonType> result = alert.showAndWait();
+        return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
 
     @FXML
     private void handleEditCategory() {
@@ -96,7 +146,7 @@ public class CategoryEditController {
             errorLabel.setText("Error al actualizar la categoría.");
         }
     }
-
+    
     private void clearFields() {
         nameField.clear();
         imagesArea.clear();

@@ -63,7 +63,7 @@ public class UserService {
         }
     }
 
-    public User createUser(User user) throws IOException {
+    public static User createUser(User user) throws IOException {
         String json = gson.toJson(user);
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 

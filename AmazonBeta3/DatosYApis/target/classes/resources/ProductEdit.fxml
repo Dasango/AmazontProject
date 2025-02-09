@@ -95,6 +95,7 @@
 						</HBox>
 						<Label />
 						<Button fx:id="editButton" disable="true" mnemonicParsing="false" onAction="#handleEditProduct" text="Editar" />
+						<Button fx:id="deleteButton" disable="true" mnemonicParsing="false" onAction="#handleDeleteProduct" text="ELIMINAR!!!!!" />
 						<Label />
 					</children>
 				</VBox>
