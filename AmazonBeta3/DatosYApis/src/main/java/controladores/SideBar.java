@@ -16,6 +16,11 @@ public class SideBar {
 		System.out.println("Carga Pagina Principal");
 	}
     
+    public void showAll() throws IOException {
+    	contentPane.setCenter(FXMLLoader.load(getClass().getResource("/resources/ShowAll.fxml")));
+		System.out.println("Carga Pagina Principal");
+	}
+    
     public void showProduct() throws IOException {
     	contentPane.setCenter(FXMLLoader.load(getClass().getResource("/resources/ProductAdd.fxml")));
 		System.out.println("Carga Producto");

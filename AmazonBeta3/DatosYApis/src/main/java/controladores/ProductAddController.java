@@ -85,7 +85,7 @@ public class ProductAddController {
 			var product = new Product(1, name, price, description, category, images.split("\n"));
 
 			new ProductAd().crear(product);
-			ProductService.createProduct(product);
+			//ProductService.createProduct(product);
 
 			System.out.println("Producto agregado: " + product);
 

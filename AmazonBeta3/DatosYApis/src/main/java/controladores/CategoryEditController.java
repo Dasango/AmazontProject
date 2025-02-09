@@ -60,11 +60,11 @@ public class CategoryEditController {
                 nameField.setText(category.name());
                 imagesArea.setText(category.image());
                 editButton.setDisable(false);
-                deleteButton.setDisable(false); // Habilitamos el botón de eliminar
+                deleteButton.setDisable(false); 
                 currentCategoryId = categoryId; 
             } else {
                 errorLabel.setText("Categoría no encontrada");
-                deleteButton.setDisable(true); // Deshabilitamos el botón si no se encuentra la categoría
+                deleteButton.setDisable(true); 
             }
         } catch (NumberFormatException e) {
             errorLabel.setText("Por favor, ingrese un número válido :(");

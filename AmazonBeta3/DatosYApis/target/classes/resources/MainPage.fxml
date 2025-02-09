@@ -26,6 +26,15 @@
                      </image>
                   </ImageView>
                </graphic></Button>
+            <Button alignment="TOP_LEFT" contentDisplay="RIGHT" graphicTextGap="10.0" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#showAll" prefHeight="25.0" prefWidth="201.0" styleClass="no-fondo" stylesheets="@estilos.css" text="Mostrar Todo">
+               <graphic>
+                  <ImageView fitHeight="18.0" fitWidth="14.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@ForwardArrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
 				<Label />
 				<Label text="-o-" />
 				<Label />

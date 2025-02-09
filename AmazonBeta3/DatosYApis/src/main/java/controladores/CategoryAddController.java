@@ -40,7 +40,7 @@ public class CategoryAddController {
 
 			var category = new Category(1, name, image);
 			new CategoryAd().crear(category);
-			CategoryService.createCategory(category);
+			//CategoryService.createCategory(category);
 			
 			System.out.println("Categoria agregado: " + category);
 

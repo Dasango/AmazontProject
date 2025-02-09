@@ -54,7 +54,7 @@ public class UserAddController {
 
             UserAd userAd = new UserAd();
             if (userAd.crear(user)) {
-            	UserService.createUser(user);
+            	//UserService.createUser(user);
                 errorLabel.setText("Usuario creado correctamente.");
                 System.out.println("Usuario creado: " + user);
                 clearFields(); 
