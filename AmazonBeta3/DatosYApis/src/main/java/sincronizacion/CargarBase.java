@@ -8,7 +8,6 @@ import serv.*;
  
 import java.io.IOException;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class CargarBase {
@@ -79,7 +78,7 @@ public class CargarBase {
 				}
 			}
 		}
-		public static void sincroniarTodos() {
+		public static void sincronizarTodos() {
 			CargarBase m = new CargarBase();
 			m.sincronizarCategorias();
 			m.sincronizarProductos();

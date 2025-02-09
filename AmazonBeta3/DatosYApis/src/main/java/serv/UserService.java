@@ -10,7 +10,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
-import data.Category;
 import data.User;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
