@@ -96,10 +96,10 @@ public class CategoryEditController {
                 currentCategoryId = -1;
                 deleteButton.setDisable(true); 
             } else {
-                errorLabel.setText("No se pudo eliminar la categoría.");
+                errorLabel.setText("No se pudo eliminar la categoría en la base.");
             }
         } catch (Exception e) {
-            errorLabel.setText("Error al eliminar la categoría.");
+            errorLabel.setText("No se puede borrar categoría asociado a un producto");
             e.printStackTrace();
         }
     }

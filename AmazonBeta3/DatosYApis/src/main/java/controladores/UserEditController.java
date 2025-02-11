@@ -176,7 +176,7 @@ public class UserEditController {
             }
 
         } catch (IOException e) {
-            errorLabel.setText("Contraseña minimo 4 o email invalido ");
+            errorLabel.setText("Contraseña minimo 4, email invalido o avatar link inválido ");
             
         }  catch (Exception e) {
             errorLabel.setText("Error al editar el usuario: " + e.getMessage());

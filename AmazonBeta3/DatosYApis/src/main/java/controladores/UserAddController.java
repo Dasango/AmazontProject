@@ -65,7 +65,7 @@ public class UserAddController {
                 errorLabel.setText("Error al crear el usuario.");
             }
         }catch (IOException e) {
-            errorLabel.setText("Contraseña minimo 4, email invalido ");
+            errorLabel.setText("Contraseña minimo 4, email invalido o avatar link inválido ");
         } 
         catch (Exception e) {
             errorLabel.setText("Error al agregar el usuario.");

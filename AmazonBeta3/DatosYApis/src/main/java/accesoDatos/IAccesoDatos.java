@@ -11,7 +11,7 @@ public interface IAccesoDatos<T> {
 	
 	public static final String url = "jdbc:mysql://localhost:3306/tienda";
 	public static final String usuario = "root";
-	public static final String password = "root";
+	public static final String password = "labcom,2015";
 	
 	List<T> obtenerTodos () ; 
 	T obtenerPorId(int id); 
