@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 import accesoDatos.CategoryAd;
@@ -82,20 +83,22 @@ public class ProductAddController {
 				return;
 			}
 
-			var product = new Product(1, name, price, description, category, images.split("\n"));
+			var product = new Product(1000, name, price, description, category, images.split("\n"));
+			
+			
+			var productInApi= ProductService.createProduct(product);
 
-			new ProductAd().crear(product);
-			//ProductService.createProduct(product);
-
+			new ProductAd().crear(productInApi);
+			
 			System.out.println("Producto agregado: " + product);
 
 			clearFields();
 
 		} catch (NumberFormatException e) {
 			errorLabel.setText("Por favor, ingrese un precio válido.");
-		} catch (SQLException e) {
-			errorLabel.setText("Error al agregar el producto.");
-		} catch (Exception e) {
+		}  catch (IOException e) {
+			errorLabel.setText("Un link valido ppr favor");
+		}catch (Exception e) {
 			errorLabel.setText("Error al agregar el producto.");
 		}
 	}

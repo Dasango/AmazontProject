@@ -69,7 +69,7 @@ public class CategoryService {
         }
     }
 	
-	public Category updateProduct(int categoryId, Category category) throws IOException {
+	public static Category updateProduct(int categoryId, Category category) throws IOException {
         String json = gson.toJson(category);
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 

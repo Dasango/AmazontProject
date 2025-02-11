@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import serv.CategoryService;
 
 public class CategoryEditController {
 
@@ -81,20 +82,19 @@ public class CategoryEditController {
                 return;
             }
 
-            // Confirmación de eliminación
-            boolean confirm = showConfirmationDialog();  // Llamamos a un método de confirmación (ver abajo)
+            boolean confirm = showConfirmationDialog(); 
             if (!confirm) {
                 return;
             }
-
-            // Intentamos eliminar la categoría
+            
+            CategoryService.deleteCategory(currentCategoryId); 
             boolean deleted = new CategoryAd().eliminar(currentCategoryId);
 
             if (deleted) {
                 errorLabel.setText("Categoría eliminada correctamente.");
                 clearFields();
                 currentCategoryId = -1;
-                deleteButton.setDisable(true); // Deshabilitamos el botón después de la eliminación
+                deleteButton.setDisable(true); 
             } else {
                 errorLabel.setText("No se pudo eliminar la categoría.");
             }
@@ -132,8 +132,11 @@ public class CategoryEditController {
             }
 
             Category category = new Category(currentCategoryId, name, image);
+            
+            CategoryService.updateProduct(currentCategoryId, category); 
+            
             boolean updated = new CategoryAd().actualizar(category);
-
+            
             if (updated) {
                 errorLabel.setText("Categoría actualizada correctamente.");
                 clearFields();

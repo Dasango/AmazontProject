@@ -51,10 +51,11 @@ public class UserAddController {
             }
 
             var user = new User(1, name, email, clave, role, avatar); 
-
+            
+        	var userInApi= UserService.createUser(user);
             UserAd userAd = new UserAd();
-            if (userAd.crear(user)) {
-            	//UserService.createUser(user);
+            
+            if (userAd.crear(userInApi)) {
                 errorLabel.setText("Usuario creado correctamente.");
                 System.out.println("Usuario creado: " + user);
                 clearFields(); 

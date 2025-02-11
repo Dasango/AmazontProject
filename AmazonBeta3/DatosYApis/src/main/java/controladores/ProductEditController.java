@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.util.StringConverter;
 import serv.CategoryService;
+import serv.ProductService;
 
 public class ProductEditController {
 
@@ -140,7 +141,9 @@ public class ProductEditController {
                 return; // Si el usuario no confirma, no se elimina
             }
 
-            // Intentamos eliminar el producto
+            ProductService.deleteProduct(idProductEditing);
+
+            
             boolean deleted = new ProductAd().eliminar(idProductEditing);
 
             if (deleted) {
@@ -181,6 +184,9 @@ public class ProductEditController {
             }
 
             Product product = new Product(idProductEditing, name, price, description, category, images.split("\n"));
+            
+            ProductService.updateProduct(idProductEditing, product);
+
             boolean updated = new ProductAd().actualizar(product);
 
             if (updated) {

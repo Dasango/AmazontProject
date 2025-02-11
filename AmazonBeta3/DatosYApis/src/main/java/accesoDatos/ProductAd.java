@@ -14,47 +14,7 @@ import data.Product;
 public class ProductAd implements IAccesoDatos<Product> {
 
 	@Override
-	public boolean crear(Product producto) throws SQLException {
-	    String query = "INSERT INTO producto (title, price, description, categoria) VALUES (?, ?, ?, ?)";
-
-	    try (Connection con = getConnection();
-	         PreparedStatement ps = con.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-
-	        ps.setString(1, producto.title());
-	        ps.setDouble(2, producto.price());
-	        ps.setString(3, producto.description());
-	        ps.setInt(4, producto.category().id());
-
-	        if (ps.executeUpdate() > 0) {
-	            // Obtener el ID generado
-	            ResultSet rs = ps.getGeneratedKeys();
-	            int generatedId = -1;
-	            if (rs.next()) {
-	                generatedId = rs.getInt(1);
-	            } else {
-	                throw new SQLException("No se pudo obtener el ID del producto insertado.");
-	            }
-
-	            // Insertar imágenes
-	            String queryImg = "INSERT INTO imgproducto (id, path) VALUES (?, ?)";
-	            for (String img : producto.images()) {
-	                try (PreparedStatement psImg = con.prepareStatement(queryImg)) {
-	                    psImg.setInt(1, generatedId);
-	                    psImg.setString(2, img);
-
-	                    if (psImg.executeUpdate() <= 0) {
-	                        throw new SQLException("No se pudo insertar la imagen: " + img);
-	                    }
-	                }
-	            }
-	            return true;
-	        }
-	    }
-	    return false;
-	}
-
-
-	public boolean crearApi(Product producto) {
+	public boolean crear(Product producto) {
 		String query = "INSERT INTO producto (id, title, price, description, categoria) VALUES (?, ?, ?, ?, ?)";
 
 		try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(query)) {

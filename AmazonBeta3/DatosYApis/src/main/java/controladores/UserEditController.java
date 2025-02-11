@@ -13,6 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
+import serv.ProductService;
+import serv.UserService;
 
 public class UserEditController {
     @FXML
@@ -107,7 +109,9 @@ public class UserEditController {
                 return; // Si el usuario no confirma, no se elimina
             }
 
-            // Intentamos eliminar el usuario
+            UserService.deleteUser(currentUserId);
+
+            
             boolean deleted = new UserAd().eliminar(currentUserId);
 
             if (deleted) {
@@ -153,8 +157,10 @@ public class UserEditController {
             }
 
             var user = new User(currentUserId, name, email, clave, role, avatar);
-            UserAd userAd = new UserAd();
-            boolean updated = userAd.actualizar(user);
+                        
+            UserService.updateUser(currentUserId, user);
+
+            boolean updated = new UserAd().actualizar(user);
 
             if (updated) {
                 System.out.println("Usuario actualizado: " + user);

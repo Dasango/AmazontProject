@@ -57,22 +57,32 @@ public class ProductService {
 
 	    // POST: Crear un nuevo producto
     public static Product createProduct(Product product) throws IOException {
-        String json = gson.toJson(product);
+        // Asegúrate de que category no sea null antes de llamar a category.id()
+        Product.ProductApi productApi = product.getProduct();
+
+        // Convierte el producto a JSON
+        String json = gson.toJson(productApi);
+        
+        // Crea el cuerpo de la solicitud
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 
+        // Construye la solicitud
         Request request = new Request.Builder()
                 .url(BASE_URL)
                 .post(requestBody)
                 .build();
 
+        // Envía la solicitud y maneja la respuesta
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-            	return gson.fromJson(response.body().string(), Product.class);  
+                // Deserializa la respuesta JSON a un objeto Product
+                return gson.fromJson(response.body().string(), Product.class);
             } else {
                 throw new IOException("Error: " + response.code());
             }
         }
     }
+
 
     // PUT: Actualizar un producto
     public static Product updateProduct(int productId, Product product) throws IOException {

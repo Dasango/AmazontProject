@@ -80,7 +80,7 @@ public class UserService {
         }
     }
 
-    public User updateUser(int userId, User user) throws IOException {
+    public static User updateUser(int userId, User user) throws IOException {
         String json = gson.toJson(user);
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 
@@ -98,7 +98,7 @@ public class UserService {
         }
     }
 
-    public boolean deleteUser(int userId) throws IOException {
+    public static boolean deleteUser(int userId) throws IOException {
         Request request = new Request.Builder()
                 .url(BASE_URL + "/" + userId)
                 .delete()
