@@ -185,9 +185,9 @@ public class ProductEditController {
 
             Product product = new Product(idProductEditing, name, price, description, category, images.split("\n"));
             
-            ProductService.updateProduct(idProductEditing, product);
+            var productInApi=ProductService.updateProduct(idProductEditing, product);
 
-            boolean updated = new ProductAd().actualizar(product);
+            boolean updated = new ProductAd().actualizar(productInApi);
 
             if (updated) {
                 errorLabel.setText("Producto actualizado correctamente.");

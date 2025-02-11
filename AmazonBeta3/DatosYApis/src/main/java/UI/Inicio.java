@@ -12,7 +12,7 @@ public class Inicio extends Application {
 	@Override
     public void start(Stage primaryStage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/resources/MainPage.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/resources/SideBar.fxml"));
             Scene scene = new Scene(root);
             primaryStage.setTitle("Amazon't");
             Image icon = new Image(getClass().getResourceAsStream("/resources/logo.png"));

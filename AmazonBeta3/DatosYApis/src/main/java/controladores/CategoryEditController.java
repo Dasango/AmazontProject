@@ -133,9 +133,9 @@ public class CategoryEditController {
 
             Category category = new Category(currentCategoryId, name, image);
             
-            CategoryService.updateProduct(currentCategoryId, category); 
+            var categoryInApi= CategoryService.updateProduct(currentCategoryId, category); 
             
-            boolean updated = new CategoryAd().actualizar(category);
+            boolean updated = new CategoryAd().actualizar(categoryInApi);
             
             if (updated) {
                 errorLabel.setText("Categoría actualizada correctamente.");

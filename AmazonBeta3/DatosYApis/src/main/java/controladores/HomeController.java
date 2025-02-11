@@ -47,9 +47,14 @@ public class HomeController {
             var product = new ProductAd().obtenerPorId(productId);
                      
             if (product.images().length > 0) {
-                String imageUrl = product.images()[0];
+
+
+            	String imageUrl = product.images()[0];
+            	                
+                var cleanedImageUrl = imageUrl.replaceAll("[\\[\\]\"']", "").trim(); // This removes all brackets and quotes
+                
                 try {
-                    imageView.setImage(new Image(imageUrl, true)); 
+                    imageView.setImage(new Image(cleanedImageUrl , true)); 
                 } catch (Exception e) {
                     imageView.setImage(new Image("/resources/No_Image_Available.jpg")); 
                 }

@@ -38,7 +38,7 @@
                   <Label />
                   <HBox alignment="CENTER" prefWidth="200.0">
                      <children>
-                        <Label text="Imagenes: " textAlignment="CENTER">
+                        <Label text="Imagen: " textAlignment="CENTER">
                            <font>
                               <Font size="18.0" />
                            </font>

@@ -158,9 +158,9 @@ public class UserEditController {
 
             var user = new User(currentUserId, name, email, clave, role, avatar);
                         
-            UserService.updateUser(currentUserId, user);
+            var userInApi=UserService.updateUser(currentUserId, user);
 
-            boolean updated = new UserAd().actualizar(user);
+            boolean updated = new UserAd().actualizar(userInApi);
 
             if (updated) {
                 System.out.println("Usuario actualizado: " + user);

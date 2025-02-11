@@ -43,7 +43,13 @@ public class ShowAllController implements Initializable {
             ImageView imageView;
                        
             try {
-                imageView = new ImageView(new Image(producto.images()[0], true));
+
+            	String imageUrl = producto.images()[0];
+            	                
+                var cleanedImageUrl = imageUrl.replaceAll("[\\[\\]\"']", "").trim(); // This removes all brackets and quotes
+                
+            	
+                imageView = new ImageView(new Image(cleanedImageUrl, true));
             } catch (Exception e) {
                 imageView = new ImageView(new Image("/resources/No_Image_Available.jpg")); 
             }
