@@ -2,6 +2,7 @@ package UI;
 
 import java.io.IOException;
 
+import data.User;
 import serv.CategoryService;
 import serv.ProductService;
 import serv.UserService;
@@ -28,17 +29,17 @@ public class Main {
 		//Conectar Api e importarlos a la base de datos
 		
 
-		//CargarBase.sincronizarTodos();
+		CargarBase.sincronizarTodos();
 				
 		//Inicia GUI
-		
+	
 		Inicio.main(args);
 		
 		
 		//Verificamos la api
-		//CategoryService.getAllCategories().forEach(System.out::println);
-		//UserService.getAllUsers().forEach(System.out::println);
-		//ProductService.getAllProducts().forEach(System.out::println);
+		CategoryService.getAllCategories().forEach(System.out::println);
+		UserService.getAllUsers().forEach(System.out::println);
+		ProductService.getAllProducts().forEach(System.out::println);
 
 		
 

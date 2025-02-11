@@ -25,16 +25,14 @@ public class UserService {
     private static final Gson gson = new Gson();
     
     public static List<User> getAllUsers() throws IOException {
-    	// crear el mensaje de solicitud
 	    Request request = new Request.Builder()
 	                .url(BASE_URL)
 	                .get()
-	                .build();
-        // ejecutar la solicitud y obtener el mensaje de respuesta
+	                .build();  
+	    
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
             	String responseBody = response.body().string();
-            	// Tipo genérico para deserializar
                 Type UserListType = new TypeToken<List<User>>(){}.getType();
                 return gson.fromJson(responseBody, UserListType); 
               } else {
@@ -73,12 +71,16 @@ public class UserService {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-            	return gson.fromJson(response.body().string(), User.class);  
+                return gson.fromJson(response.body().string(), User.class);
             } else {
-                throw new IOException("Error: " + response.code());
+                // Leer el cuerpo de la respuesta antes de lanzar la excepción
+                String errorBody = response.body() != null ? response.body().string() : "Unknown error";
+                throw new IOException("Error: " + response.code() + " - " + errorBody);
             }
         }
     }
+
+    
 
     public static User updateUser(int userId, User user) throws IOException {
         String json = gson.toJson(user);

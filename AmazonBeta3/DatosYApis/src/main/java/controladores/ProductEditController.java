@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -185,7 +186,7 @@ public class ProductEditController {
 
             Product product = new Product(idProductEditing, name, price, description, category, images.split("\n"));
             
-            var productInApi=ProductService.updateProduct(idProductEditing, product);
+            var productInApi= ProductService.updateProduct(idProductEditing, product);
 
             boolean updated = new ProductAd().actualizar(productInApi);
 
@@ -195,12 +196,15 @@ public class ProductEditController {
                 System.out.println("Producto actualizado: " + product);
 
             } else {
-                errorLabel.setText("Error al actualizar el producto.");
+                errorLabel.setText("Error al actualizar el producto. 1");
             }
 
         } catch (NumberFormatException e) {
             errorLabel.setText("Por favor, ingrese un precio válido.");
-        } catch (Exception e) {
+        } catch (IOException e) {
+            errorLabel.setText("Error al actualizar en el api.");
+            e.printStackTrace();
+        }catch (Exception e) {
             errorLabel.setText("Error al actualizar el producto.");
         }
     }

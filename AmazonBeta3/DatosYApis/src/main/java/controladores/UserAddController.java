@@ -1,5 +1,7 @@
 package controladores;
 
+import java.io.IOException;
+
 import accesoDatos.UserAd;
 import data.User;
 import javafx.collections.FXCollections;
@@ -31,7 +33,7 @@ public class UserAddController {
 
     @FXML
     public void initialize() {
-        roleComboBox.setItems(FXCollections.observableArrayList("admin", "customer", "seller"));
+        roleComboBox.setItems(FXCollections.observableArrayList("admin", "customer"));
     }
 
     @FXML
@@ -62,9 +64,11 @@ public class UserAddController {
             } else {
                 errorLabel.setText("Error al crear el usuario.");
             }
-        } catch (Exception e) {
+        }catch (IOException e) {
+            errorLabel.setText("Contraseña minimo 4, email invalido ");
+        } 
+        catch (Exception e) {
             errorLabel.setText("Error al agregar el usuario.");
-            e.printStackTrace(); 
         }
     }
 

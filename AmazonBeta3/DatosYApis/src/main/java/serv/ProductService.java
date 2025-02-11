@@ -57,25 +57,20 @@ public class ProductService {
 
 	    // POST: Crear un nuevo producto
     public static Product createProduct(Product product) throws IOException {
-        // Asegúrate de que category no sea null antes de llamar a category.id()
+    	
         Product.ProductApi productApi = product.getProduct();
 
-        // Convierte el producto a JSON
         String json = gson.toJson(productApi);
         
-        // Crea el cuerpo de la solicitud
         RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 
-        // Construye la solicitud
         Request request = new Request.Builder()
                 .url(BASE_URL)
                 .post(requestBody)
                 .build();
 
-        // Envía la solicitud y maneja la respuesta
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                // Deserializa la respuesta JSON a un objeto Product
                 return gson.fromJson(response.body().string(), Product.class);
             } else {
                 throw new IOException("Error: " + response.code());
@@ -83,12 +78,14 @@ public class ProductService {
         }
     }
 
-
-    // PUT: Actualizar un producto
+ // PUT: Actualizar un producto
     public static Product updateProduct(int productId, Product product) throws IOException {
-        String json = gson.toJson(product);
-        RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
 
+    	Product.ProductApi productApi = product.getProduct();
+
+        String json = gson.toJson(productApi);
+        RequestBody requestBody = RequestBody.create(json, MediaType.get("application/json"));
+        
         Request request = new Request.Builder()
                 .url(BASE_URL + "/" + productId)
                 .put(requestBody)
@@ -96,12 +93,13 @@ public class ProductService {
 
         try (Response response = client.newCall(request).execute()) {
             if (response.isSuccessful()) {
-                return gson.fromJson(response.body().string(), Product.class);  
+                return gson.fromJson(response.body().string(), Product.class);
             } else {
-                throw new IOException("Error: " + response.code());
+                throw new IOException("Error: " + response.code()+" - " + response.body().string());
             }
         }
     }
+
 
     // DELETE: Eliminar un producto
     public static boolean deleteProduct(int productId) throws IOException {

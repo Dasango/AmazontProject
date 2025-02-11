@@ -1,5 +1,6 @@
  package controladores;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import accesoDatos.UserAd;
@@ -45,7 +46,7 @@ public class UserEditController {
                 getUser();
             }
         });
-        roleComboBox.setItems(FXCollections.observableArrayList("admin", "customer", "seller"));
+        roleComboBox.setItems(FXCollections.observableArrayList("admin", "customer"));
     }
 
     @FXML
@@ -121,6 +122,9 @@ public class UserEditController {
                 errorLabel.setText("No se pudo eliminar el usuario.");
             }
 
+        } catch (IOException e) {
+            errorLabel.setText("Contraseña minimo 4, email invalido ");
+            
         } catch (Exception e) {
             errorLabel.setText("Error al eliminar el usuario.");
             e.printStackTrace();
@@ -171,7 +175,10 @@ public class UserEditController {
                 errorLabel.setText("No se pudo actualizar el usuario.");
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            errorLabel.setText("Contraseña minimo 4 o email invalido ");
+            
+        }  catch (Exception e) {
             errorLabel.setText("Error al editar el usuario: " + e.getMessage());
             e.printStackTrace();
         }
